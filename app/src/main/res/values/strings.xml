@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">RetrofitSandbox</string>
+    
+    <string-array name="cities">
+        <item>Moscow</item>
+        <item>Saint-Petersburg</item>
+    </string-array>
+</resources>
