@@ -53,7 +53,9 @@ public class CityStorage {
             cities.add((String) value);
         }
         return cities;
-
-
+    }
+    public static void pop(String key) {
+        editor.remove(key);
+        editor.apply();
     }
 }
