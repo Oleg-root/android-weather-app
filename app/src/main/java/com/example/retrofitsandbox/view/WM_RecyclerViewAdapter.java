@@ -39,8 +39,8 @@ public class WM_RecyclerViewAdapter extends RecyclerView.Adapter<WM_RecyclerView
         // based on the position of the RecyclerView
 
         holder.cityName.setText(weatherModels.get(position).getCityName());
-        holder.temperature.setText((int) weatherModels.get(position).getTemperature());
-        holder.feelsLike.setText((int) weatherModels.get(position).getFeelsLike());
+        holder.temperature.setText(String.format("%.1f °C", weatherModels.get(position).getTemperature()));
+        holder.feelsLike.setText(String.format("%.1f °C", weatherModels.get(position).getFeelsLike()));
     }
 
     @Override
@@ -49,6 +49,11 @@ public class WM_RecyclerViewAdapter extends RecyclerView.Adapter<WM_RecyclerView
 
         return weatherModels.size();
     }
+
+    public void setModels(ArrayList<WeatherModel> models) {
+        weatherModels = models;
+    }
+
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // Grab the views from recyclerview_row.xml

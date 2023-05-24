@@ -27,6 +27,7 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView textViewResult;
     ArrayList<WeatherModel> weatherModels = new ArrayList<>(); // gonna hold all the models and then we're gonna send them to recyclerview adapter
 
+    WM_RecyclerViewAdapter adapter;
     ArrayList<String> cityNames;
 
     private void setUpWeatherModels(WeatherApi weatherApi) {
@@ -58,6 +59,9 @@ public class WeatherActivity extends AppCompatActivity {
 
                 WeatherModel weatherModel = new WeatherModel(city, currentWeatherData.getMain().getTemp(), currentWeatherData.getMain().getFeelsLike());
                 weatherModels.add(weatherModel);
+                adapter.setModels(weatherModels);
+                adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -78,12 +82,15 @@ public class WeatherActivity extends AppCompatActivity {
 
         // View
         //textViewResult = findViewById(R.id.textView_result);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView_weatherElement);
+
+
 
         // sharedPreference
         CityStorage.init(this);
         CityStorage.addProperty("Moscow", "Moscow");
         CityStorage.addProperty("Saint Petersburg", "Saint Petersburg");
+        CityStorage.addProperty("Graz", "Graz");
+        CityStorage.addProperty("Pyatigorsk", "Pyatigorsk");
         cityNames = CityStorage.getAllProperty();
 
         // апи
@@ -96,10 +103,11 @@ public class WeatherActivity extends AppCompatActivity {
         WeatherApi weatherApi = retrofit.create(WeatherApi.class);
         //WeatherApi weatherApi = initRetrofit();
 
-        // модели для отображения на экране
+        RecyclerView recyclerView = findViewById(R.id.recyclerView_weatherElement);
+
         setUpWeatherModels(weatherApi);
 
-        WM_RecyclerViewAdapter adapter = new WM_RecyclerViewAdapter(this, weatherModels);
+        adapter = new WM_RecyclerViewAdapter(this, weatherModels);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
