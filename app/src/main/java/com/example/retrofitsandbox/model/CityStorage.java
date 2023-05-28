@@ -2,10 +2,8 @@ package com.example.retrofitsandbox.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.provider.Settings;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class CityStorage {
     public static final String STORAGE_NAME = "cityStorage";
@@ -34,6 +32,15 @@ public class CityStorage {
             init();
         }
         editor.putString(name, value);
+        editor.apply();
+    }
+
+    public static void addDefaultProperties() {
+        if (settings == null) {
+            init();
+        }
+        editor.putString("Moscow", "Moscow");
+        editor.putString("Saint Petersburg", "Saint Petersburg");
         editor.apply();
     }
 

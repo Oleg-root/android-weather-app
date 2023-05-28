@@ -55,12 +55,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_weatherElement"
-        android:layout_width="382dp"
-        android:layout_height="544dp"
-        android:layout_marginTop="67dp"
+        android:layout_width="389dp"
+        android:layout_height="655dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.64"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/button_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

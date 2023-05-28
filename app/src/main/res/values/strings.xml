@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">RetrofitSandbox</string>
+    <string name="toast_city_already_exists">An entered city is already added.</string>
+    <string name="toast_city_does_not_exist">Wrong city. Try a different one.</string>
+    <string name="toast_city_added_success">City added successfully!</string>
     
     <string-array name="cities">
         <item>Moscow</item>

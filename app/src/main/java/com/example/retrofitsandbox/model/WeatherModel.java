@@ -22,4 +22,6 @@ public class WeatherModel {
     public double getFeelsLike() {
         return feelsLike;
     }
+
+    
 }
