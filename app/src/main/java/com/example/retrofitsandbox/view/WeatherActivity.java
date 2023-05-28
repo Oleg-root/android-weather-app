@@ -21,11 +21,8 @@ import java.util.ArrayList;
 
 public class WeatherActivity extends AppCompatActivity {
     private EditText editText_add;
-    ArrayList<WeatherModel> weatherModels = new ArrayList<>(); // gonna hold all the models and then we're gonna send them to recyclerview adapter
-    WM_RecyclerViewAdapter adapter;
-    WeatherPresenter presenter;
-    //ArrayList<String> cityNames;
-    WeatherApi weatherApi;
+    private WeatherPresenter presenter;
+    private WM_RecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,49 +34,31 @@ public class WeatherActivity extends AppCompatActivity {
     private void init() {
         editText_add = findViewById(R.id.editText_Input);
 
-        presenter = new WeatherPresenter();
-        presenter.attachView(this);
-
         CityStorage.init(this);
         CityStorage.addDefaultProperties();
 
-        weatherApi = presenter.initRetrofit();
-
-        presenter.setUpWeatherModels(weatherApi);
+        presenter = new WeatherPresenter();
+        presenter.attachView(this);
 
         RecyclerView citiesAndWeather = findViewById(R.id.recyclerView_weatherElement);
-        adapter = new WM_RecyclerViewAdapter(this, weatherModels);
+        adapter = new WM_RecyclerViewAdapter(this, presenter.weatherModels);
         citiesAndWeather.setAdapter(adapter);
         citiesAndWeather.setLayoutManager(new LinearLayoutManager(this));
 
         findViewById(R.id.button_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.add();
+                presenter.add(editText_add.getText().toString());
             }
         });
     }
-
-
 
     public void showToast(int resId) {
         Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
     }
 
-    public String getEnteredCity() {
-        return editText_add.getText().toString();
-    }
-
-    public WeatherApi getWeatherApi() {
-        return weatherApi;
-    }
-
     public void showCitiesAndWeather(ArrayList<WeatherModel> weatherModels) {
         adapter.setModels(weatherModels);
         adapter.notifyDataSetChanged();
-    }
-
-    public ArrayList<WeatherModel> getWeatherModels() {
-        return weatherModels;
     }
 }

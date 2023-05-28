@@ -1,7 +1,6 @@
 package com.example.retrofitsandbox.presenter;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.retrofitsandbox.R;
 import com.example.retrofitsandbox.model.CityStorage;
@@ -19,8 +18,17 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherPresenter {
+    // gonna hold all the models and then we're gonna send them to recyclerview adapter
+    public ArrayList<WeatherModel> weatherModels = new ArrayList<>();
+
+    private final WeatherApi weatherApi;
     private WeatherActivity view;
     private WeatherModel weatherModel;
+
+    public WeatherPresenter() {
+        weatherApi = initRetrofit();
+        setUpWeatherModels(weatherApi);
+    }
 
     public void attachView(WeatherActivity weatherActivity) {
         view = weatherActivity;
@@ -38,12 +46,12 @@ public class WeatherPresenter {
         return retrofit.create(WeatherApi.class);
     }
 
-    public void add() {
-        String enteredCity = view.getEnteredCity();
+    public void add(String enteredCity) {
+
         ArrayList<String> cityNames = CityStorage.getAllProperty();
         if (!cityNames.contains(enteredCity)) {
             CityStorage.addProperty(enteredCity, enteredCity);
-            getWeatherDataAndPutItInWeatherModels(view.getWeatherApi(), enteredCity);
+            getWeatherDataAndPutItInWeatherModels(weatherApi, enteredCity);
         } else {
             view.showToast(R.string.toast_city_already_exists);
         }
@@ -68,8 +76,8 @@ public class WeatherPresenter {
                 } else {
                     CurrentWeatherData currentWeatherData = response.body();
                     weatherModel = new WeatherModel(city, currentWeatherData.getMain().getTemp(), currentWeatherData.getMain().getFeelsLike());
-                    view.getWeatherModels().add(weatherModel);
-                    view.showCitiesAndWeather(view.getWeatherModels());
+                    weatherModels.add(weatherModel);
+                    view.showCitiesAndWeather(weatherModels);
                 }
             }
             @Override
