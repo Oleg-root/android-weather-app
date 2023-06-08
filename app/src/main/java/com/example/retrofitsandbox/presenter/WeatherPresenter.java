@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.retrofitsandbox.R;
 import com.example.retrofitsandbox.model.CityStorage;
 import com.example.retrofitsandbox.model.CurrentWeatherData;
-import com.example.retrofitsandbox.model.WeatherModel;
+import com.example.retrofitsandbox.model.CurrentWeatherModel;
 import com.example.retrofitsandbox.service.WeatherApi;
 import com.example.retrofitsandbox.view.WeatherActivity;
 
@@ -19,11 +19,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherPresenter {
     // gonna hold all the models and then we're gonna send them to recyclerview adapter
-    public ArrayList<WeatherModel> weatherModels = new ArrayList<>();
-
+    public ArrayList<CurrentWeatherModel> currentWeatherModels = new ArrayList<>();
     private final WeatherApi weatherApi;
     private WeatherActivity view;
-    private WeatherModel weatherModel;
+    private CurrentWeatherModel currentWeatherModel;
 
     public WeatherPresenter() {
         weatherApi = initRetrofit();
@@ -65,7 +64,7 @@ public class WeatherPresenter {
 
     private void getWeatherDataAndPutItInWeatherModels(WeatherApi weatherApi, String city) {
 
-        Call<CurrentWeatherData> call = weatherApi.getAllData(city);
+        Call<CurrentWeatherData> call = weatherApi.getCurrentData(city);
         call.enqueue(new Callback<CurrentWeatherData>() {
             @Override
             public void onResponse(Call<CurrentWeatherData> call, Response<CurrentWeatherData> response) {
@@ -75,9 +74,13 @@ public class WeatherPresenter {
                     CityStorage.pop(city);
                 } else {
                     CurrentWeatherData currentWeatherData = response.body();
-                    weatherModel = new WeatherModel(city, currentWeatherData.getMain().getTemp(), currentWeatherData.getMain().getFeelsLike());
-                    weatherModels.add(weatherModel);
-                    view.showCitiesAndWeather(weatherModels);
+
+                    currentWeatherModel = new CurrentWeatherModel(city, currentWeatherData.getMain().getTemp(),
+                                                                        currentWeatherData.getMain().getFeelsLike(),
+                                                                        currentWeatherData.getList().get(0).getCondition(),
+                                                                        currentWeatherData.getList().get(0).getDescription());
+                    currentWeatherModels.add(currentWeatherModel);
+                    view.showCitiesAndWeather(currentWeatherModels);
                 }
             }
             @Override
@@ -86,4 +89,7 @@ public class WeatherPresenter {
             }
         });
     }
+
+
+
 }

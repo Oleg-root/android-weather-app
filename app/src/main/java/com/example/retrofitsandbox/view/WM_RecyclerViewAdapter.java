@@ -4,23 +4,25 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.retrofitsandbox.R;
-import com.example.retrofitsandbox.model.WeatherModel;
+import com.example.retrofitsandbox.model.CurrentWeatherModel;
+import com.example.retrofitsandbox.presenter.WeatherPresenter;
 
 import java.util.ArrayList;
 
 public class WM_RecyclerViewAdapter extends RecyclerView.Adapter<WM_RecyclerViewAdapter.MyViewHolder> {
     Context context;
-    ArrayList<WeatherModel> weatherModels;
+    ArrayList<CurrentWeatherModel> currentWeatherModels;
 
-    public WM_RecyclerViewAdapter(Context context, ArrayList<WeatherModel> weatherModels) {
+    public WM_RecyclerViewAdapter(Context context, ArrayList<CurrentWeatherModel> currentWeatherModels) {
         this.context = context;
-        this.weatherModels = weatherModels;
+        this.currentWeatherModels = currentWeatherModels;
     }
 
     @NonNull
@@ -38,34 +40,36 @@ public class WM_RecyclerViewAdapter extends RecyclerView.Adapter<WM_RecyclerView
         // Assign values to the views created in recyclerview_row.xml
         // based on the position of the RecyclerView
 
-        holder.cityName.setText(weatherModels.get(position).getCityName());
-        holder.temperature.setText(String.format("%.1f °C", weatherModels.get(position).getTemperature()));
-        holder.feelsLike.setText(String.format("%.1f °C", weatherModels.get(position).getFeelsLike()));
+        holder.cityName.setText(currentWeatherModels.get(position).getCityName());
+        holder.temperature.setText(String.format("%.1f °C", currentWeatherModels.get(position).getTemperature()));
+        holder.feelsLike.setText(String.format("%.1f °C", currentWeatherModels.get(position).getFeelsLike()));
+        holder.weather.setImageResource(currentWeatherModels.get(position).getIconId());
+
     }
 
     @Override
     public int getItemCount() {
         // total items
 
-        return weatherModels.size();
+        return currentWeatherModels.size();
     }
 
-    public void setModels(ArrayList<WeatherModel> models) {
-        weatherModels = models;
+    public void setModels(ArrayList<CurrentWeatherModel> models) {
+        currentWeatherModels = models;
     }
-
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // Grab the views from recyclerview_row.xml
 
         TextView cityName, temperature, feelsLike;
+        ImageView weather;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             cityName = itemView.findViewById(R.id.textView);
             temperature = itemView.findViewById(R.id.textView2);
             feelsLike = itemView.findViewById(R.id.textView4);
+            weather = itemView.findViewById(R.id.iv_weather);
         }
     }
 }

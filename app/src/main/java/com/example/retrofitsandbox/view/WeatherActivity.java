@@ -11,9 +11,8 @@ import android.widget.Toast;
 
 import com.example.retrofitsandbox.R;
 import com.example.retrofitsandbox.model.CityStorage;
-import com.example.retrofitsandbox.model.WeatherModel;
+import com.example.retrofitsandbox.model.CurrentWeatherModel;
 import com.example.retrofitsandbox.presenter.WeatherPresenter;
-import com.example.retrofitsandbox.service.WeatherApi;
 
 import java.util.ArrayList;
 
@@ -41,7 +40,7 @@ public class WeatherActivity extends AppCompatActivity {
         presenter.attachView(this);
 
         RecyclerView citiesAndWeather = findViewById(R.id.recyclerView_weatherElement);
-        adapter = new WM_RecyclerViewAdapter(this, presenter.weatherModels);
+        adapter = new WM_RecyclerViewAdapter(this, presenter.currentWeatherModels);
         citiesAndWeather.setAdapter(adapter);
         citiesAndWeather.setLayoutManager(new LinearLayoutManager(this));
 
@@ -57,8 +56,8 @@ public class WeatherActivity extends AppCompatActivity {
         Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
     }
 
-    public void showCitiesAndWeather(ArrayList<WeatherModel> weatherModels) {
-        adapter.setModels(weatherModels);
+    public void showCitiesAndWeather(ArrayList<CurrentWeatherModel> currentWeatherModels) {
+        adapter.setModels(currentWeatherModels);
         adapter.notifyDataSetChanged();
     }
 }
