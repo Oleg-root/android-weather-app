@@ -2,7 +2,7 @@ package com.example.retrofitsandbox.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MainData {
+public class CurrentMain {
     private double temp;
     @SerializedName("feels_like")
     private double feelsLike;
@@ -13,7 +13,7 @@ public class MainData {
     private int pressure;
     private int humidity;
 
-    public MainData(double temp, double feelsLike, double tempMin, double tempMax, int pressure, int humidity) {
+    public CurrentMain(double temp, double feelsLike, double tempMin, double tempMax, int pressure, int humidity) {
         this.temp = temp;
         this.feelsLike = feelsLike;
         this.tempMin = tempMin;
@@ -21,7 +21,6 @@ public class MainData {
         this.pressure = pressure;
         this.humidity = humidity;
     }
-
 
     public double getTemp() {
         return temp;
@@ -43,19 +42,7 @@ public class MainData {
         return pressure;
     }
 
-//    public int getSeaLevel() {
-//        return seaLevel;
-//    }
-
-//    public int getGrndLevel() {
-//        return grndLevel;
-//    }
-
     public int getHumidity() {
         return humidity;
     }
-
-//    public double getTempKf() {
-//        return tempKf;
-//    }
 }

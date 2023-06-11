@@ -2,64 +2,30 @@ package com.example.retrofitsandbox.model;
 
 import com.example.retrofitsandbox.R;
 
-public class CurrentWeatherModel {
-    String cityName;
+public class ForecastModel {
+
+    String datetime;
     double temperature;
-    double feelsLike;
     String condition;
-    String description;
-
-    int humidity;
-
-    int pressure;
-
     int iconId;
 
-    double windSpeed;
-
-    public CurrentWeatherModel(String cityName, double temperature, double feelsLike, String condition, String description, int humidity, int pressure, double windSpeed) {
-        this.cityName = cityName;
+    public ForecastModel(String datetime, double temperature, String condition) {
+        this.datetime = datetime;
         this.temperature = temperature;
-        this.feelsLike = feelsLike;
         this.condition = condition;
-        this.description = description;
-        this.humidity = humidity;
-        this.pressure = pressure;
-        this.windSpeed = windSpeed;
-
         this.iconId = getWeatherIconByCondition(condition);
     }
 
-    public String getCityName() {
-        return cityName;
+    public String getDatetime() {
+        return datetime;
     }
 
     public double getTemperature() {
         return temperature;
     }
 
-    public double getFeelsLike() {
-        return feelsLike;
-    }
-
     public String getCondition() {
         return condition;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getHumidity() {
-        return humidity;
-    }
-
-    public int getPressure() {
-        return pressure;
-    }
-
-    public double getWindSpeed() {
-        return windSpeed;
     }
 
     public int getIconId() {
