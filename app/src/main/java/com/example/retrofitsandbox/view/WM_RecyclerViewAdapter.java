@@ -29,7 +29,6 @@ public class WM_RecyclerViewAdapter extends RecyclerView.Adapter<WM_RecyclerView
     @Override
     public WM_RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate the layout (Give a look to rows)
-
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recyclerview_row, parent, false);
         return new WM_RecyclerViewAdapter.MyViewHolder(view);
@@ -39,7 +38,6 @@ public class WM_RecyclerViewAdapter extends RecyclerView.Adapter<WM_RecyclerView
     public void onBindViewHolder(@NonNull WM_RecyclerViewAdapter.MyViewHolder holder, int position) {
         // Assign values to the views created in recyclerview_row.xml
         // based on the position of the RecyclerView
-
         holder.cityName.setText(currentWeatherModels.get(position).getCityName());
         holder.temperature.setText(String.format("%.1f °C", currentWeatherModels.get(position).getTemperature()));
         holder.feelsLike.setText(String.format("%.1f °C", currentWeatherModels.get(position).getFeelsLike()));
@@ -50,7 +48,6 @@ public class WM_RecyclerViewAdapter extends RecyclerView.Adapter<WM_RecyclerView
     @Override
     public int getItemCount() {
         // total items
-
         return currentWeatherModels.size();
     }
 
@@ -60,7 +57,6 @@ public class WM_RecyclerViewAdapter extends RecyclerView.Adapter<WM_RecyclerView
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // Grab the views from recyclerview_row.xml
-
         TextView cityName, temperature, feelsLike;
         ImageView weather;
 

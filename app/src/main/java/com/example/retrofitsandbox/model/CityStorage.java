@@ -40,7 +40,7 @@ public class CityStorage {
             init();
         }
         editor.putString("Moscow", "Moscow");
-        editor.putString("Saint Petersburg", "Saint Petersburg");
+        //editor.putString("Saint Petersburg", "Saint Petersburg");
         editor.apply();
     }
 

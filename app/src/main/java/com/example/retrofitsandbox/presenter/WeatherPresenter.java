@@ -6,6 +6,8 @@ import com.example.retrofitsandbox.R;
 import com.example.retrofitsandbox.model.CityStorage;
 import com.example.retrofitsandbox.model.CurrentWeatherData;
 import com.example.retrofitsandbox.model.CurrentWeatherModel;
+import com.example.retrofitsandbox.model.ForecastData;
+import com.example.retrofitsandbox.model.ForecastModel;
 import com.example.retrofitsandbox.service.WeatherApi;
 import com.example.retrofitsandbox.view.WeatherActivity;
 
@@ -23,10 +25,13 @@ public class WeatherPresenter {
     private final WeatherApi weatherApi;
     private WeatherActivity view;
     private CurrentWeatherModel currentWeatherModel;
+    private ForecastModel forecastModel;
+    public ArrayList<ForecastModel> forecastModels = new ArrayList<>();
 
     public WeatherPresenter() {
         weatherApi = initRetrofit();
         setUpWeatherModels(weatherApi);
+        getWeatherDataAndPutItInWeatherModels(weatherApi, CityStorage.getProperty("Moscow"));
     }
 
     public void attachView(WeatherActivity weatherActivity) {
@@ -46,7 +51,6 @@ public class WeatherPresenter {
     }
 
     public void add(String enteredCity) {
-
         ArrayList<String> cityNames = CityStorage.getAllProperty();
         if (!cityNames.contains(enteredCity)) {
             CityStorage.addProperty(enteredCity, enteredCity);
@@ -58,29 +62,29 @@ public class WeatherPresenter {
 
     public void setUpWeatherModels(WeatherApi weatherApi) {
         for (int i = 0; i < CityStorage.getAllProperty().size(); i++) {
-            getWeatherDataAndPutItInWeatherModels(weatherApi, CityStorage.getAllProperty().get(i));
+            getForecastDataAndPutItInWeatherModels(weatherApi, CityStorage.getAllProperty().get(i));
         }
     }
 
+    // Current weather data
     private void getWeatherDataAndPutItInWeatherModels(WeatherApi weatherApi, String city) {
-
         Call<CurrentWeatherData> call = weatherApi.getCurrentData(city);
         call.enqueue(new Callback<CurrentWeatherData>() {
             @Override
             public void onResponse(Call<CurrentWeatherData> call, Response<CurrentWeatherData> response) {
                 if (!response.isSuccessful()) {
                     Log.d("getWeatherData onResponse", "Something went wrong");
-                    view.showToast(R.string.toast_city_does_not_exist);
-                    CityStorage.pop(city);
                 } else {
                     CurrentWeatherData currentWeatherData = response.body();
-
                     currentWeatherModel = new CurrentWeatherModel(city, currentWeatherData.getMain().getTemp(),
                                                                         currentWeatherData.getMain().getFeelsLike(),
                                                                         currentWeatherData.getList().get(0).getCondition(),
-                                                                        currentWeatherData.getList().get(0).getDescription());
+                                                                        currentWeatherData.getList().get(0).getDescription(),
+                                                                        currentWeatherData.getMain().getHumidity(),
+                                                                        currentWeatherData.getMain().getPressure(),
+                                                                        currentWeatherData.getWind().getSpeed());
                     currentWeatherModels.add(currentWeatherModel);
-                    view.showCitiesAndWeather(currentWeatherModels);
+                    view.showCurrentWeather(currentWeatherModel);
                 }
             }
             @Override
@@ -90,6 +94,29 @@ public class WeatherPresenter {
         });
     }
 
-
-
+    // Forecast for every 3 hours
+    private void getForecastDataAndPutItInWeatherModels(WeatherApi weatherApi, String city) {
+        Call<ForecastData> call = weatherApi.getForecastData(city);
+        call.enqueue(new Callback<ForecastData>() {
+            @Override
+            public void onResponse(Call<ForecastData> call, Response<ForecastData> response) {
+                if (!response.isSuccessful()) {
+                    Log.d("getForecastData onResponse", "Something went wrong");
+                } else {
+                    ForecastData forecastData = response.body();
+                    for (int i = 0; i < forecastData.getList().size(); i++) {
+                        forecastModel = new ForecastModel(forecastData.getList().get(i).getDatetime(),
+                                forecastData.getList().get(i).getMain().getTemperature(),
+                                forecastData.getList().get(i).getWeather().get(0).getCondition());
+                        forecastModels.add(forecastModel);
+                    }
+                    view.showrecyclerview(forecastModels);
+                }
+            }
+            @Override
+            public void onFailure(Call<ForecastData> call, Throwable t) {
+                Log.d("getForecastData onFailure", "Something went wrong", t);
+            }
+        });
+    }
 }

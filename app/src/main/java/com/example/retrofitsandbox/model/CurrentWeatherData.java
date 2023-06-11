@@ -8,20 +8,26 @@ public class CurrentWeatherData {
 
     @SerializedName("weather")
     private List<CurrentWeatherCondition> list;
-    private MainData main;
+    private CurrentMain main;
+    private ForecastWindData wind;
 
-    public CurrentWeatherData(MainData main, List<CurrentWeatherCondition> list) {
+    public CurrentWeatherData(CurrentMain main, List<CurrentWeatherCondition> list, ForecastWindData wind) {
         this.main = main;
         this.list = list;
+        this.wind = wind;
 
     }
 
-    public MainData getMain() {
+    public CurrentMain getMain() {
         return main;
     }
 
     public List<CurrentWeatherCondition> getList() {
         return list;
+    }
+
+    public ForecastWindData getWind() {
+        return wind;
     }
 
 
